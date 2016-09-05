@@ -62,10 +62,8 @@
     getLink: function(pitch){
       return pitch * 2
     },
-    getPath: function(teeth,pitch,test,x,y,chainR){
+    getPath: function(teeth,pitch,test,cx,cy,chainR){
       var pi2 = 2*Math.PI
-      var cx = x
-      var cy = y
       var cr = chainR + (this.pitch / 2)
       var cir = chainR - (this.pitch * .7)
       
