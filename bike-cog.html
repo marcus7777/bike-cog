@@ -7,15 +7,12 @@
   <template>
     <template is="dom-if" if="{{show}}">
       <style>:host {display:inline-block;}</style>
-    <svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
-      <path d$="{{path}}" stroke="black" fill="green"/>
-      <path d$="{{pathTest}}" stroke="red" fill="none" stroke-width$="{{pitch}}" stroke-linecap="round" stroke-dasharray$="0,{{link}}"/>
-      <path d$="{{pathTest}}" stroke="red" fill="none" stroke-width="1" />
-    </svg>
+      <svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+        <path d$="{{path}}" stroke="black" fill="green"/>
+        <path d$="{{pathTest}}" stroke="red" fill="none" stroke-width$="{{pitch}}" stroke-linecap="round" stroke-dasharray$="0,{{link}}"/>
+        <path d$="{{pathTest}}" stroke="red" fill="none" stroke-width="1" />
+      </svg>
     </template>
-    
-     
-    
   </template>
 </dom-module>
 <script>
@@ -52,16 +49,15 @@
     getLink: function(pitch){
       return pitch * 2
     },
-    getPath: function(undefined){
-      this.a = this.pitch/Math.sin(Math.PI /this.teeth)
+    getPath: function(teeth,pitch,test){
+      var test = pitch/Math.sin(Math.PI /teeth)
       var pi2 = 2*Math.PI
-      var cx = this.a + 50
-      var cy = this.a + 50
-      var cr = this.a + (this.pitch /2)
-      var cir = this.a - (this.pitch* .7)
-      var test = this.a
+      var cx = test + pitch
+      var cy = test + pitch
+      var cr = test + (pitch /2)
+      var cir = test - (pitch* .7)
       
-      var calculated = Array(this.teeth+1).join(" ").split("").
+      var calculated = Array(teeth+1).join(" ").split("").
         map(function (v, i, arr) {
           return " "+ +(cx + (Math.cos(pi2 * ((i)/arr.length)) * cr))
                 +" "+ +(cy + (Math.sin(pi2 * ((i)/arr.length)) * cr))
@@ -91,8 +87,6 @@
           })
         this.pathTest = "M " + calculatedTest.join(" ")
       }
-      
-      
       return "M " + calculated.join(" ")
     },
   })
