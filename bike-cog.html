@@ -7,12 +7,15 @@
   <template>
     <template is="dom-if" if="{{show}}">
       <style>:host {display:inline-block;}</style>
-      <svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
-        <path d$="{{path}}" stroke="black" fill="green"/>
-        <path d$="{{pathTest}}" stroke="red" fill="none" stroke-width$="{{pitch}}" stroke-linecap="round" stroke-dasharray$="0,{{link}}"/>
-        <path d$="{{pathTest}}" stroke="red" fill="none" stroke-width="1" />
-      </svg>
+    <svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+      <path d$="{{path}}" stroke="black" fill="green"/>
+      <path d$="{{pathTest}}" stroke="red" fill="none" stroke-width$="{{pitch}}" stroke-linecap="round" stroke-dasharray$="0,{{link}}"/>
+      <path d$="{{pathTest}}" stroke="red" fill="none" stroke-width="1" />
+    </svg>
     </template>
+    
+     
+    
   </template>
 </dom-module>
 <script>
@@ -50,27 +53,27 @@
       return pitch * 2
     },
     getPath: function(teeth,pitch,test){
-      var test = pitch/Math.sin(Math.PI /teeth)
+      var chainR = pitch/Math.sin(Math.PI /teeth)
       var pi2 = 2*Math.PI
-      var cx = test + pitch
-      var cy = test + pitch
-      var cr = test + (pitch /2)
-      var cir = test - (pitch* .7)
+      var cx = chainR + 50
+      var cy = chainR + 50
+      var cr = chainR + (this.pitch /2)
+      var cir = chainR - (this.pitch* .7)
       
-      var calculated = Array(teeth+1).join(" ").split("").
+      var calculated = Array(this.teeth+1).join(" ").split("").
         map(function (v, i, arr) {
           return " "+ +(cx + (Math.cos(pi2 * ((i)/arr.length)) * cr))
                 +" "+ +(cy + (Math.sin(pi2 * ((i)/arr.length)) * cr))
               +" Q "+ +(cx + (Math.cos(pi2 * ((i+.1)/arr.length)) * cr))
                 +" "+ +(cy + (Math.sin(pi2 * ((i+.1)/arr.length)) * cr))
-                +" "+ +(cx + (Math.cos(pi2 * ((i+.2)/arr.length)) * test))
-                +" "+ +(cy + (Math.sin(pi2 * ((i+.2)/arr.length)) * test))
+                +" "+ +(cx + (Math.cos(pi2 * ((i+.2)/arr.length)) * chainR))
+                +" "+ +(cy + (Math.sin(pi2 * ((i+.2)/arr.length)) * chainR))
               +" C "+ +(cx + (Math.cos(pi2 * ((i+.3)/arr.length)) * cir))
                 +" "+ +(cy + (Math.sin(pi2 * ((i+.3)/arr.length)) * cir))
                 +" "+ +(cx + (Math.cos(pi2 * ((i+.7)/arr.length)) * cir))
                 +" "+ +(cy + (Math.sin(pi2 * ((i+.7)/arr.length)) * cir))
-                +" "+ +(cx + (Math.cos(pi2 * ((i+.8)/arr.length)) * test))
-                +" "+ +(cy + (Math.sin(pi2 * ((i+.8)/arr.length)) * test))
+                +" "+ +(cx + (Math.cos(pi2 * ((i+.8)/arr.length)) * chainR))
+                +" "+ +(cy + (Math.sin(pi2 * ((i+.8)/arr.length)) * chainR))
               +" Q "+ +(cx + (Math.cos(pi2 * ((i+.9)/arr.length)) * cr))
                 +" "+ +(cy + (Math.sin(pi2 * ((i+.9)/arr.length)) * cr))
                 +" "+ +(cx + (Math.cos(pi2 * ((i+1)/arr.length)) * cr))
@@ -79,14 +82,16 @@
                 +" "+ +(cy + (Math.sin(pi2 * ((i+1)/arr.length)) * cr))
                
         })
-      if (this.test) {
-        var calculatedTest = Array(this.teeth+1).join(" ").split("").
+      if (test) {
+        var calculatedTest = Array(teeth+1).join(" ").split("").
           map(function (v, i, arr) {
-            return " "+ +(cx + (Math.cos(pi2 * ((i+.5)/arr.length)) * test))
-              +" "+ +(cy + (Math.sin(pi2 * ((i+.5)/arr.length)) * test))
+            return " "+ +(cx + (Math.cos(pi2 * ((i+.5)/arr.length)) * chainR))
+              +" "+ +(cy + (Math.sin(pi2 * ((i+.5)/arr.length)) * chainR))
           })
         this.pathTest = "M " + calculatedTest.join(" ")
       }
+      
+      
       return "M " + calculated.join(" ")
     },
   })
