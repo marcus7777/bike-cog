@@ -13,7 +13,6 @@
       <path d$="{{pathTest}}" stroke="red" fill="none" stroke-width="1" />
     </svg>
     </template>
-    
      
     
   </template>
@@ -38,7 +37,7 @@
         value:false,
       },
       path:{
-        computed:"getPath(teeth,pitch,test)",
+        computed:"getPath(teeth,pitch,test,x,y,chainR)",
         notify:true,
       },
       pathTest:{
@@ -48,17 +47,27 @@
         type:Boolean,
         value:false,
       },
+      x:{
+        type:Number,
+        value:50,
+      },
+      y:{
+        type:Number,
+        value:50,
+      },
+      chainR:{
+        computed:"getChainR(pitch,teeth)",
+      },
     },
     getLink: function(pitch){
       return pitch * 2
     },
-    getPath: function(teeth,pitch,test){
-      var chainR = pitch/Math.sin(Math.PI /teeth)
+    getPath: function(teeth,pitch,test,x,y,chainR){
       var pi2 = 2*Math.PI
-      var cx = chainR + 50
-      var cy = chainR + 50
-      var cr = chainR + (this.pitch /2)
-      var cir = chainR - (this.pitch* .7)
+      var cx = chainR + x
+      var cy = chainR + y
+      var cr = chainR + (this.pitch / 2)
+      var cir = chainR - (this.pitch * .7)
       
       var calculated = Array(this.teeth+1).join(" ").split("").
         map(function (v, i, arr) {
@@ -82,17 +91,19 @@
                 +" "+ +(cy + (Math.sin(pi2 * ((i+1)/arr.length)) * cr))
                
         })
-      if (test) {
-        var calculatedTest = Array(teeth+1).join(" ").split("").
-          map(function (v, i, arr) {
-            return " "+ +(cx + (Math.cos(pi2 * ((i+.5)/arr.length)) * chainR))
-              +" "+ +(cy + (Math.sin(pi2 * ((i+.5)/arr.length)) * chainR))
-          })
-        this.pathTest = "M " + calculatedTest.join(" ")
-      }
-      
+        if (test) {
+          var calculatedTest = Array(teeth+1).join(" ").split("").
+            map(function (v, i, arr) {
+              return " "+ +(cx + (Math.cos(pi2 * ((i+.5)/arr.length)) * chainR))
+                +" "+ +(cy + (Math.sin(pi2 * ((i+.5)/arr.length)) * chainR))
+            })
+          this.pathTest = "M " + calculatedTest.join(" ")
+        }
       
       return "M " + calculated.join(" ")
+    },
+    getChainR: function(pitch,teeth){
+      return pitch/Math.sin(Math.PI /teeth)
     },
   })
 </script>
