@@ -7,7 +7,7 @@
   <template>
     <template is="dom-if" if="{{show}}">
       <style>:host {display:inline-block;}</style>
-    <svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+    <svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
       <path d$="{{path}}" stroke="black" fill="green"/>
       <path d$="{{pathTest}}" stroke="red" fill="none" stroke-width$="{{pitch}}" stroke-linecap="round" stroke-dasharray$="0,{{link}}"/>
       <path d$="{{pathTest}}" stroke="red" fill="none" stroke-width="1" />
@@ -64,8 +64,8 @@
     },
     getPath: function(teeth,pitch,test,x,y,chainR){
       var pi2 = 2*Math.PI
-      var cx = chainR + x
-      var cy = chainR + y
+      var cx = x
+      var cy = y
       var cr = chainR + (this.pitch / 2)
       var cir = chainR - (this.pitch * .7)
       
