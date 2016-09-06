@@ -37,7 +37,7 @@
         value:false,
       },
       path:{
-        computed:"getPath(teeth,pitch,test,x,y,chainR)",
+        computed:"getPath(teeth,pitch,test,x,y,chainR,innerHole)",
         notify:true,
       },
       pathTest:{
@@ -58,11 +58,15 @@
       chainR:{
         computed:"getChainR(pitch,teeth)",
       },
+      innerHole:{
+        type:Number,
+        value:60,
+      },
     },
     getLink: function(pitch){
       return pitch * 2
     },
-    getPath: function(teeth,pitch,test,cx,cy,chainR){
+    getPath: function(teeth,pitch,test,cx,cy,chainR,holeR){
       var pi2 = 2*Math.PI
       var cr = chainR + (this.pitch / 2)
       var cir = chainR - (this.pitch * .7)
@@ -89,6 +93,11 @@
                 +" "+ +(cy + (Math.sin(pi2 * ((i+1)/arr.length)) * cr))
                
         })
+      var innerHole =                    " M "+ (cx+holeR) +" "+ cy +" "+
+        " A 1 1 0 0 0 " + (cx-holeR) +" "+ (cy) +
+        " A 1 1 0 0 0 " + (cx+holeR) +" "+ (cy) +" "
+      
+      
         if (test) {
           var calculatedTest = Array(teeth+1).join(" ").split("").
             map(function (v, i, arr) {
@@ -98,7 +107,7 @@
           this.pathTest = "M " + calculatedTest.join(" ")
         }
       
-      return "M " + calculated.join(" ")
+      return innerHole + "M " + calculated.join(" ")
     },
     getChainR: function(pitch,teeth){
       return pitch/Math.sin(Math.PI /teeth)
